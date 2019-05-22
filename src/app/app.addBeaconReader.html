@@ -1,0 +1,38 @@
+<mat-card class="matCard">
+  <mat-card-header>
+    <mat-card-title>{{data.title}} Beacon Reader</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <table>
+      <tr>
+        <td>
+          <mat-form-field>
+            <input matInput placeholder="Name" [(ngModel)]="data.bReader.Name" required>
+          </mat-form-field>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <mat-form-field class="locationSelection">
+            <mat-select placeholder="Location" [(value)]="data.bReader.LocationId" required>
+              <mat-option *ngFor="let location of locations" [value]="location.Id">
+                {{ location.Name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <mat-form-field>
+            <input matInput placeholder="Mac" [(ngModel)]="data.bReader.Mac" required>
+          </mat-form-field>
+        </td>
+      </tr>
+    </table>
+  </mat-card-content>
+  <mat-card-actions class="center">
+    <button mat-button (click)="saveBeaconReader(data.bReader)" cdkFocusInitial>Save</button>
+    <button mat-button [mat-dialog-close]="true" [color]="'success'">Cancel</button>
+  </mat-card-actions>
+</mat-card>

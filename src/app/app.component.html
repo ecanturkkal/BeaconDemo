@@ -1,0 +1,140 @@
+<body>
+  <div>
+    <h2>BEACON DEMO</h2>
+    <br>
+    <button mat-raised-button (click)="openLocationDialog(newLocation, 'New')">
+      <mat-icon>add</mat-icon> New Location
+    </button>
+    &nbsp;
+    <button mat-raised-button (click)="openVesselDialog(newVessel, 'New')">
+      <mat-icon>add</mat-icon> New Vessel
+    </button>
+    &nbsp;
+    <button mat-raised-button (click)="openBeaconReaderDialog(newBeaconReader, 'New')">
+      <mat-icon>add</mat-icon> New Beacon Reader
+    </button>
+  </div>
+
+  <div class="row">
+    <div class="leftColumn">
+      <div class="mat-elevation-z8">
+        <h3>LOCATIONS</h3>
+        <table mat-table [dataSource]="locationTable">
+          <ng-container matColumnDef="Id">
+            <th mat-header-cell *matHeaderCellDef> Id </th>
+            <td mat-cell *matCellDef="let location"> {{location.Id}} </td>
+          </ng-container>
+          <ng-container matColumnDef="Name">
+            <th mat-header-cell *matHeaderCellDef> Name </th>
+            <td mat-cell *matCellDef="let location"> {{location.Name}} </td>
+          </ng-container>
+          <ng-container matColumnDef="Latitude">
+            <th mat-header-cell *matHeaderCellDef> Latitude </th>
+            <td mat-cell *matCellDef="let location"> {{location.Latitude}} </td>
+          </ng-container>
+          <ng-container matColumnDef="Longitude">
+            <th mat-header-cell *matHeaderCellDef> Longitude </th>
+            <td mat-cell *matCellDef="let location"> {{location.Longitude}} </td>
+          </ng-container>
+          <ng-container matColumnDef="Actions">
+            <mat-header-cell *matHeaderCellDef></mat-header-cell>
+            <mat-cell *matCellDef="let location">
+              <button mat-icon-button (click)="openLocationDialog(location, 'Update')">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-icon-button color="warn" (click)="deleteLocation(location)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </mat-cell>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="locationColumns;"></tr>
+          <tr mat-row *matRowDef="let row; columns: locationColumns;"></tr>
+        </table>
+      </div>
+
+      <div class="mat-elevation-z8">
+        <h3>VESSELS</h3>
+
+        <table mat-table [dataSource]="vesselTable">
+          <ng-container matColumnDef="Id">
+            <th mat-header-cell *matHeaderCellDef> Id </th>
+            <td mat-cell *matCellDef="let vessel"> {{vessel.Id}} </td>
+          </ng-container>
+          <ng-container matColumnDef="Name">
+            <th mat-header-cell *matHeaderCellDef> Name </th>
+            <td mat-cell *matCellDef="let vessel"> {{vessel.Name}} </td>
+          </ng-container>
+          <ng-container matColumnDef="Mac">
+            <th mat-header-cell *matHeaderCellDef> Mac </th>
+            <td mat-cell *matCellDef="let vessel"> {{vessel.Mac}} </td>
+          </ng-container>
+          <ng-container matColumnDef="Actions">
+            <mat-header-cell *matHeaderCellDef></mat-header-cell>
+            <mat-cell *matCellDef="let vessel">
+              <button mat-icon-button (click)="openVesselDialog(vessel, 'Update')">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-icon-button color="warn" (click)="deleteVessel(vessel)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </mat-cell>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="vesselColumns;"></tr>
+          <tr mat-row *matRowDef="let row; columns: vesselColumns;"></tr>
+        </table>
+      </div>
+
+      <div class="mat-elevation-z8">
+        <h3>BEACON READERS</h3>
+
+        <table mat-table [dataSource]="beaconReaderDataTable">
+          <ng-container matColumnDef="Id">
+            <th mat-header-cell *matHeaderCellDef> Id </th>
+            <td mat-cell *matCellDef="let beaconReader"> {{beaconReader.Id}} </td>
+          </ng-container>
+          <ng-container matColumnDef="Name">
+            <th mat-header-cell *matHeaderCellDef> Name </th>
+            <td mat-cell *matCellDef="let beaconReader"> {{beaconReader.Name}} </td>
+          </ng-container>
+          <ng-container matColumnDef="LocationId" style="visibility: hidden">
+            <th mat-header-cell *matHeaderCellDef> LocationId </th>
+            <td mat-cell *matCellDef="let beaconReader"> {{beaconReader.LocationId}} </td>
+          </ng-container>
+          <ng-container matColumnDef="LocationName">
+            <th mat-header-cell *matHeaderCellDef> LocationName </th>
+            <td mat-cell *matCellDef="let beaconReader"> {{beaconReader.LocationName}} </td>
+          </ng-container>
+          <ng-container matColumnDef="Mac">
+            <th mat-header-cell *matHeaderCellDef> Mac </th>
+            <td mat-cell *matCellDef="let beaconReader"> {{beaconReader.Mac}} </td>
+          </ng-container>
+          <ng-container matColumnDef="Actions">
+            <mat-header-cell *matHeaderCellDef></mat-header-cell>
+            <mat-cell *matCellDef="let beaconReader">
+              <button mat-icon-button (click)="openBeaconReaderDialog(beaconReader, 'Update')">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-icon-button color="warn" (click)="deleteBeaconReader(beaconReader)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </mat-cell>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="beaconReaderColumns;"></tr>
+          <tr mat-row *matRowDef="let row; columns: beaconReaderColumns;"></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="rightColumn">
+      <i class="fa"></i>
+      <div style="height: 450px">
+        <x-map #xmap [Options]="options" [Box]="box">
+          <x-map-marker *ngFor="let info of mapLocationInfos" [Latitude]="info.Latitude" [Longitude]="info.Longitude"
+            [Title]="info.VesselName" [IconInfo]="iconInfo">
+            <x-info-box [DisableAutoPan]="true" [Title]="info.VesselName" [Description]="info.Description">
+            </x-info-box>
+          </x-map-marker>
+        </x-map>
+      </div>
+    </div>
+  </div>

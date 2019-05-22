@@ -1,0 +1,126 @@
+* {
+    box-sizing: border-box;
+  }
+  .h2
+  {
+    font-family: Arial;
+  }
+  .h3
+  {
+    font-family: Arial;
+  }
+  .body {
+    font-family: Arial, Helvetica, sans-serif;
+  }
+  .leftColumn {
+    float: left;
+    width: 40%;
+    padding: 0 10px;
+  }
+  .leftHeader {
+    height: 15%;
+  }
+  .leftBody {
+    width:100%;
+    height:62vh;
+  }
+  .canvasDiv {
+    position: absolute;
+    width: 65%;
+    height: 62vh;
+    overflow:auto;
+  }
+  .afterCanvas {
+    position: absolute;
+    width: 65%;
+    height: 15vh;
+    top:85vh; 
+  }
+  .parameterTab {
+    height: 10%;
+    float: right;
+  }
+  .previous {
+    margin-right: 10%;
+  }
+  .rightColumn {
+    float: right;
+    width: 60%;
+    padding: 0 10px;
+  } 
+
+  .row {
+    margin: 0 -5px;
+  }
+  .row:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+  .rightFloat {
+    float: right;
+    margin: auto;
+  }
+  .left {
+    float: left; 
+  }
+  /* Responsive columns */
+  @media screen and (max-width: 600px) {
+    .column {
+      width: 100%;
+      display: block;
+      margin-bottom: 20px;
+    }
+  }
+  .cyan{
+    background-color: #00ffff;
+    color: #00ffff;
+    margin-right: 5%;
+  }
+  .darkGreen {
+    background-color: #339933;
+    color: #339933;
+    margin-right: 10%;
+  }
+  .tagSelection {
+    width:10%;
+  }
+
+  .mat-button {
+    background-color: rgb(235, 27, 27);
+    color: white;
+    border: 1px solid rgb(79, 176, 233);
+  }  
+  .mat-button:hover {
+    background-color: rgb(206, 87, 87);
+  }
+  .center {
+    text-align:center; 
+  }
+  .fileSelect {
+    height: 30px;
+    width: 100%;
+  }
+  .matCard {
+    background-color: #cce6ff;
+  }
+  .mat-success {
+    background-color: rgb(53, 99, 168);
+    color: #fff;
+  }
+  .mat-success:hover {
+    background-color: transparent;
+    color: black;
+  }
+  .buttonGroup {
+    position: fixed;
+    z-index: 4;
+    float: right;
+    width: 30%;
+  }
+  .make-red {
+    background-color: red;
+  }
+  .mat-table{
+    width: 100%;
+  }
