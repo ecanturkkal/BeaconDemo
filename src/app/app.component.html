@@ -1,6 +1,6 @@
 <body>
   <div>
-    <h2>BEACON DEMO</h2>
+    <!-- <h2>BEACON DEMO</h2> -->
     <br>
     <button mat-raised-button (click)="openLocationDialog(newLocation, 'New')">
       <mat-icon>add</mat-icon> New Location
@@ -13,6 +13,12 @@
     <button mat-raised-button (click)="openBeaconReaderDialog(newBeaconReader, 'New')">
       <mat-icon>add</mat-icon> New Beacon Reader
     </button>
+    &nbsp;
+    <button mat-raised-button (click)="startToReadData()">
+      <mat-icon>launch</mat-icon> Start to Read Data
+    </button>  
+    &nbsp;
+    <mat-card-title>{{sayac}}</mat-card-title>
   </div>
 
   <div class="row">

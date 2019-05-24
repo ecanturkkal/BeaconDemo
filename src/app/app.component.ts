@@ -1,13 +1,8 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { MarkerTypeId, IMapOptions, IBox, IMarkerIconInfo } from 'angular-maps';
 import Swal from 'sweetalert2';
-import { BehaviorSubject } from 'rxjs';
-//import initialBeaconData from '../assets/BeaconData.json';
-//import initialLocationData from '../assets//Location.json';
-//import initialVesselData from '../assets/Vessel.json';
-//import initialBeaconReaderData from '../assets/BeaconReader.json';
 
 //#region "Interfaces"
 
@@ -127,6 +122,9 @@ export class AppComponent implements OnInit {
   beaconReaderDataTable: IBeaconReader[] = [];
   vesselInfo: IVessel;
 
+  sayac: string = "";
+  bIndex = 0;
+
   //#endregion
 
   ngOnInit() {
@@ -145,6 +143,7 @@ export class AppComponent implements OnInit {
     locationDialog.disableClose = true;
     locationDialog.afterClosed().subscribe(result => {
       location = { Id: 0, Name: "", Latitude: 0, Longitude: 0 }
+      this.newLocation = { Id: 0, Name: "", Latitude: 0, Longitude: 0 }
       this.fillLocationDataTable();
     });
   }
@@ -191,6 +190,7 @@ export class AppComponent implements OnInit {
     vesselDialog.disableClose = true;
     vesselDialog.afterClosed().subscribe(result => {
       vessel = { Id: 0, Name: "", Mac: "" }
+      this.newVessel = { Id: 0, Name: "", Mac: "" }
       this.fillVesselDataTable();
       this.fillMapLocationInfo();
     });
@@ -229,6 +229,7 @@ export class AppComponent implements OnInit {
     bReaderDialog.disableClose = true;
     bReaderDialog.afterClosed().subscribe(result => {
       bReader = { Id: 0, Name: "", LocationId: 0, Mac: "" }
+      this.newBeaconReader = { Id: 0, Name: "", LocationId: 0, Mac: "" }
       this.fillBeaconReaderDataTable();
       this.fillMapLocationInfo();
     });
@@ -263,9 +264,9 @@ export class AppComponent implements OnInit {
   fillInitializedData() {
     this.fillLocationDataTable();
     this.fillVesselDataTable();
-    this.fillBeaconDataDataTable();
     this.fillBeaconReaderDataTable();
-    setTimeout(() => this.fillMapLocationInfo(), 1000);
+    //this.fillBeaconDataDataTable();
+    //setTimeout(() => this.fillMapLocationInfo(), 500);
   }
 
   fillLocationDataTable() {
@@ -297,23 +298,13 @@ export class AppComponent implements OnInit {
     if (localReaders) {
       this.beaconReaderTable = JSON.parse(localReaders);
       this.setBeaconReaderDataTable();
-
     } else {
       this.httpClient.get<IBeaconReader[]>('assets/BeaconReader.json').subscribe(d => {
         this.beaconReaderTable = d;
         localStorage.setItem('beaconReaderTable', JSON.stringify(d));
         this.setBeaconReaderDataTable();
-
       });
     }
-
-    // if (localStorage.getItem('beaconReaderTable') == undefined) {
-    //   localStorage.setItem('beaconReaderTable', JSON.stringify(initialBeaconReaderData));
-    // }
-    // else {
-    //   this.beaconReaderTable = JSON.parse(localStorage.getItem('beaconReaderTable'));
-    // }
-
   }
 
   private setBeaconReaderDataTable() {
@@ -330,22 +321,31 @@ export class AppComponent implements OnInit {
     }
   }
 
-  fillBeaconDataDataTable() {
-    this.httpClient.get<IBeaconData[]>('assets/BeaconData.json').subscribe(d => {
-      this.beaconDataTable = d;
+  fillBeaconDataDataTable()
+  {
+    this.bIndex += 1;
+    this.httpClient.get<IBeaconData[]>(`assets/BeaconData.json?i=${this.bIndex}`).subscribe(d => {
       localStorage.setItem('beaconDataTable', JSON.stringify(d));
+      this.beaconDataTable = JSON.parse(localStorage.getItem('beaconDataTable'));
     });
+  }
 
+  startToReadData() {
+    var i: number = 1;
+    const headers = { headers: new HttpHeaders({
+      'Cache-Control': 'no-cache'
+    }) };
 
-    //localStorage.setItem('beaconDataTable', JSON.stringify(initialBeaconData));
-    //this.beaconDataTable = JSON.parse(localStorage.getItem('beaconDataTable'));
-
-    // if (localStorage.getItem('beaconDataTable') == undefined) {
-    //   localStorage.setItem('beaconDataTable', JSON.stringify(initialBeaconData));
-    // }
-    // else {
-    //   this.beaconDataTable = JSON.parse(localStorage.getItem('beaconDataTable'));
-    // }
+    setInterval(() => {
+      this.bIndex += 1;
+      this.httpClient.get<IBeaconData[]>(`assets/BeaconData.json?i=${this.bIndex}`, headers).subscribe(d => {
+        this.beaconDataTable = d;
+        localStorage.setItem('beaconDataTable', JSON.stringify(d));
+        setTimeout(() => this.fillMapLocationInfo(), 500);
+        //this.sayac = i.toString() + " defa çalıştım.";
+        i++;
+      });
+    }, 3000);
   }
 
   fillMapLocationInfo() {
